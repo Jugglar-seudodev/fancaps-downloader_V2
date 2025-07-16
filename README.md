@@ -30,7 +30,7 @@ pip install beautifulsoup4 tqdm
 * `https://fancaps.net/{tv|anime}/episodeimages.php?...`: Url of episode page
 * `https://fancaps.net/movies/MovieImages.php?...`: Url of movie page
 
-Warning: Due to an issue with `&` caractère in args. Use double quote for the URL argument
+Warning: Due to an issue with `&` caractère in args. Use double quote for the URL argument, in the case of movies, the code was updated to download page by page because if you try to download all the images, fancaps will block you for a certain time
 
 ### Usage exemple:
 
