@@ -11,7 +11,9 @@ class MovieCrawler:
     def crawl(self, url):
         currentUrl = url
         pageNumber = 1
+        picLinks = url #pruebas
 
+        
         # Extraer el nombre de la subcarpeta desde el parámetro "name"
         try:
             match = re.search(r"name=([^&]+)", url)
@@ -81,3 +83,8 @@ class MovieCrawler:
                 currentUrl = None
 
         print("\n✅ Download completed")
+
+        return {
+            'subfolder': subfolder,
+            'links': picLinks
+        }
