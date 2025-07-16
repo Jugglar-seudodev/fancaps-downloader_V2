@@ -17,7 +17,7 @@ class MovieCrawler:
             match = re.search(r"name=([^&]+)", url)
             subfolder = match.group(1) if match else "movie"
         except Exception as e:
-            print(f"❌ Error extrayendo subcarpeta: {e}")
+            print(f"❌ Error extracting subfolder: {e}")
             subfolder = "movie"
 
         # Crear carpeta Download/subcarpeta
@@ -26,10 +26,10 @@ class MovieCrawler:
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        print(f"📁 Imágenes se guardarán en: {output_folder}")
+        print(f"📁 Images will be saved to: {output_folder}")
 
         while currentUrl:
-            print(f"\n📄 Procesando página {pageNumber}...")
+            print(f"\n📄 Processing page {pageNumber}...")
 
             try:
                 request = urllib.request.Request(currentUrl, headers={
@@ -38,7 +38,7 @@ class MovieCrawler:
                 page = urllib.request.urlopen(request)
                 soup = BeautifulSoup(page, "html.parser")
             except Exception as e:
-                print(f"❌ Error cargando o analizando página: {e}")
+                print(f"❌ Error loading or analyzing page: {e}")
                 break
 
             # Encontrar imágenes primero
@@ -58,7 +58,7 @@ class MovieCrawler:
                         images.append((final_url, local_path))
 
             # Mostrar barra de progreso por todas las imágenes de esta página
-            for final_url, local_path in tqdm(images, desc=f"⬇️ Descargando imágenes", unit="img"):
+            for final_url, local_path in tqdm(images, desc=f"⬇️ Downloading images", unit="img"):
                 try:
                     req = urllib.request.Request(final_url, headers={
                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0',
@@ -80,4 +80,4 @@ class MovieCrawler:
             else:
                 currentUrl = None
 
-        print("\n✅ Descarga completada.")
+        print("\n✅ Download completed")
