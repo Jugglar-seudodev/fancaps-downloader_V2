@@ -6,51 +6,48 @@ import urllib.error
 from scraper.utils.colors import Colors
 
 class SeasonCrawler:
-    url = None
-    name = None
-
     def crawl(self, url):
         epLinks = []
         picLinks = []
-        self.url = url
-        currentUrl = self.url
+        currentUrl = url
         page = 1
 
         while currentUrl:
             try:
-                request = urllib.request.Request(currentUrl, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0'})
+                request = urllib.request.Request(currentUrl, headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0'
+                })
                 content = urllib.request.urlopen(request)
             except urllib.error.URLError as e:
-                Colors.print(f"Error occurred while opening the URL: {e.reason}", Colors.RED)
+                Colors.print(f"Error opening URL: {e.reason}", Colors.RED)
                 break
             except urllib.error.HTTPError as e:
                 Colors.print(f"HTTP Error: {e.code} {e.reason}", Colors.RED)
                 break
 
             try:
-                beautifulSoup = BeautifulSoup(content, 'html.parser')
+                soup = BeautifulSoup(content, 'html.parser')
             except Exception as e:
-                Colors.print(f"Error occurred while parsing the page: {e}", Colors.RED)
+                Colors.print(f"Error parsing page: {e}", Colors.RED)
                 break
 
-            for DOMLink in beautifulSoup.find_all('a', class_='btn', href=re.compile("^.*?/episodeimages.php\?")):
-                href = DOMLink.get('href')
-                if href:
-                    if not re.match("^https://.*?/episodeimages.php\?", href):
-                        href = 'https://fancaps.net' + DOMLink.get('href')
+            # Encontrar todos los links de episodios
+            for a in soup.find_all('a', class_='btn', href=True):
+                href = a['href']
+                if 'episodeimages.php?' in href:
+                    if not href.startswith("http"):
+                        href = 'https://fancaps.net' + href
+                    epLinks.append(href)
 
-                    match = re.search(r"https://fancaps.net/.*?/episodeimages.php\?\d+-(.*?)/", href)
-                    if match:
-                        if not self.name:
-                            self.name = match.group(1)
-                        if self.name == match.group(1):
-                            epLinks.append(href)
-            if beautifulSoup.find("a", text=re.compile(r'Next', re.IGNORECASE), href=lambda href: href and href != "#"):
+            # Buscar paginación
+            next_link = soup.find("a", href=lambda h: h and f"&page={page + 1}" in h)
+            if next_link:
                 page += 1
                 currentUrl = url + f"&page={page}"
             else:
                 currentUrl = None
 
+        # Usar el episode_crawler
         crawler = episode_crawler.EpisodeCrawler()
         for epLink in epLinks:
             try:
