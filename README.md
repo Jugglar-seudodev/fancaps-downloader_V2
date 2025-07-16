@@ -4,6 +4,8 @@
 
 This project it's a simple Python script for download screencaps from https://fancaps.net.
 
+I'm not a very experienced programmer and I only do it as a hobby
+
 ## Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
