@@ -6,6 +6,9 @@ This project it's a simple Python script for download screencaps from https://fa
 
 I'm not a very experienced programmer and I only do it as a hobby
 
+## Colab
+[![Open Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hDTnqufykos-3MNRqfZnBVisZUiCB2Io?usp=sharing)
+
 ## Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
@@ -34,8 +37,7 @@ pip install beautifulsoup4 tqdm
 
 Warning: Due to an issue with `&` caractère in args. Use double quote for the URL argument, in the case of movies, the code was updated to download page by page because if you try to download all the images, fancaps will block you for a certain time
 
-### Usage exemple:
-
+### Example:
 ```
 python fancaps-downloader.py --output "Download" URL
 ```
