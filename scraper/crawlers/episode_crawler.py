@@ -46,6 +46,9 @@ class EpisodeCrawler:
                 imgSrc = img["src"]
                 filename = imgSrc.split("/")[-1]
                 if filename.endswith((".jpg", ".jpeg", ".png")):
+                    # Check if the URL starts with the old base URL and replace it
+                    if imgSrc.startswith("https://ant.fancaps.net/"):
+                        imgSrc = imgSrc.replace("https://ant.fancaps.net/", "https://cdni.fancaps.net/file/fancaps-animeimages/")
                     picLinks.append(imgSrc)
 
             # Buscar paginación
