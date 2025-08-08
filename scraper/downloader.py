@@ -42,7 +42,7 @@ class Downloader:
             with lock:
                 pbar.update(1)
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             with tqdm(total=total) as pbar:
                 futures = []
                 for url in urls:
@@ -52,4 +52,3 @@ class Downloader:
 
                 for future in concurrent.futures.as_completed(futures):
                     future.result()
-
